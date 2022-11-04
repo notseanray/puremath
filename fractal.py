@@ -2,9 +2,23 @@
 # f(z) = z2 + c, f(z) = z3 + c
 # additional input-space and parameter space plotting for any defined function of z and c
 from pm import comp
+
+def array_to_hex(arr):
+    biggest = arr[0]
+    for v in arr:
+        if v > biggest:
+            biggest = v
+    if biggest < 15:
+        for v in arr:
+            v = hex(v)
+        return arr
+    for v in arr:
+        v = hex(15 / biggest * v)
+    return arr
+
 def fatou2(cr=0,ci=0,size=128,iterate=32):
     ppm = open('./plots/current.ppm','w')
-    ppm.write(f'P3\n{2*size} {2*size}\n{iterate}\n')
+    ppm.write(f'{2*size} {2*size} 3\n10\n')
     for imag in range(-size,size):
         colorlist = []
         for real in range(-size,size):
@@ -18,7 +32,7 @@ def fatou2(cr=0,ci=0,size=128,iterate=32):
                     break
             colorlist.append(counter)
         for b in colorlist:
-            ppm.write((str(b)+' ')*3)
+            ppm.write((str(b if b < 10 else 9))*3)
         ppm.write('\n')
 def fatou3(cr=0,ci=0,size=128,iterate=32):
     ppm = open('./plots/current.ppm','w')
@@ -40,7 +54,7 @@ def fatou3(cr=0,ci=0,size=128,iterate=32):
         ppm.write('\n')
 def mandelbrot(size=128,iterate=32,sectionr=0,sectioni=0):
     ppm = open('./plots/current.ppm','w') # rename to save
-    ppm.write(f'P3\n{2*size} {2*size}\n{iterate}\n')
+    ppm.write(f'{2*size} {2*size} 3\n10\n')
     for imag in range(-size,size):
         colorlist = []
         for real in range(-size,size):
@@ -54,7 +68,7 @@ def mandelbrot(size=128,iterate=32,sectionr=0,sectioni=0):
                     break
             colorlist.append(counter)
         for b in colorlist:
-            ppm.write((str(b)+' ')*3)
+            ppm.write(str(b if b < 10 else 9)*3)
         ppm.write('\n')
 def bibrot(size=128,iterate=32,sectionr=0,sectioni=0):
     ppm = open('./plots/current.ppm','w') # rename to save
